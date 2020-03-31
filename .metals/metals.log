@@ -1,0 +1,43 @@
+INFO  started: Metals version 0.8.0 in workspace '/Users/tishaphillips1/Desktop/Trinity University/WebApps/VideoStreamingApp'
+INFO  time: initialize in 4.78s
+WARN  Skipping build import, no checksum.
+WARN  Skipping build import, no checksum.
+WARN  Skipping build import, no checksum.
+WARN  no build target for: /Users/tishaphillips1/Desktop/Trinity University/WebApps/VideoStreamingApp/test/controllers/HomeControllerSpec.scala
+INFO  no build target: using presentation compiler with only scala-library
+INFO  running '/Library/Java/JavaVirtualMachines/jdk-9.0.4.jdk/Contents/Home/bin/java -Djline.terminal=jline.UnsupportedTerminal -Dsbt.log.noformat=true -Dfile.encoding=UTF-8 -jar /var/folders/4h/1rq44hjj707b8hqqpg2569280000gp/T/metals14096961696431293012/sbt-launch.jar set bloopExportJarClassifiers in Global := Some(Set("sources")) bloopInstall'
+INFO  skipping build import with status 'Dismissed'
+INFO  skipping build import with status 'Dismissed'
+INFO  [info] Loading global plugins from /Users/tishaphillips1/.sbt/1.0/plugins
+INFO  [info] Loading settings for project videostreamingapp-build from plugins.sbt,metals.sbt ...
+INFO  [info] Loading project definition from /Users/tishaphillips1/Desktop/Trinity University/WebApps/VideoStreamingApp/project
+INFO  [warn] There may be incompatibilities among your library dependencies; run 'evicted' to see detailed eviction warnings.
+INFO  [info] Loading settings for project root from build.sbt ...
+INFO  [info] Set current project to VideoStreamingApp (in build file:/Users/tishaphillips1/Desktop/Trinity%20University/WebApps/VideoStreamingApp/)
+INFO  [info] Defining Global / bloopExportJarClassifiers
+INFO  [info] The new value will be used by ThisBuild / bloopExportJarClassifiers
+INFO  [info] Reapplying settings...
+INFO  [info] Set current project to VideoStreamingApp (in build file:/Users/tishaphillips1/Desktop/Trinity%20University/WebApps/VideoStreamingApp/)
+INFO  [warn] There may be incompatibilities among your library dependencies; run 'evicted' to see detailed eviction warnings.
+INFO  [success] Generated .bloop/root-test.json
+INFO  [success] Generated .bloop/root.json
+INFO  [success] Total time: 3 s, completed Mar 31, 2020, 5:23:07 PM
+INFO  build tool exit: 0
+INFO  time: ran 'sbt bloopInstall' in 24s
+Starting the bsp launcher for bloop...
+Opening a bsp server connection with 'bsp --protocol local --socket /var/folders/4h/1rq44hjj707b8hqqpg2569280000gp/T/bsp-launcher15111814825492092954/bsp.socket'...
+Waiting for the bsp connection to come up...
+[0m[32m[D][0m Waiting for a connection at local:///var/folders/4h/1rq44hjj707b8hqqpg2569280000gp/T/bsp-launcher15111814825492092954/bsp.socket...
+The server is listening for incoming connections at local:///var/folders/4h/1rq44hjj707b8hqqpg2569280000gp/T/bsp-launcher15111814825492092954/bsp.socket...
+Starting thread that pumps stdin and redirects it to the bsp server...
+Starting thread that pumps server stdout and redirects it to the client stdout...
+INFO  tracing is disabled for protocol BSP, to enable tracing of incoming and outgoing JSON messages create an empty file at /Users/tishaphillips1/Library/Caches/org.scalameta.metals/bsp.trace.json
+INFO  time: connected to build server in 1.37s
+INFO  Connected to Build server v1.4.0-RC1
+ERROR Empty build targets. Expected at least one build target identifier.
+ERROR Empty build targets. Expected at least one build target identifier.
+ERROR Empty build targets. Expected at least one build target identifier.
+INFO  time: imported build in 0.12s
+INFO  time: indexed workspace in 3.65s
+ERROR Empty build targets. Expected at least one build target identifier.
+ERROR Empty build targets. Expected at least one build target identifier.
