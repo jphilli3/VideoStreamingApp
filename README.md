@@ -1,6 +1,10 @@
 # VideoStreamingApp
 This is the repository for the video streaming web application for Dr. Lewis's Web Apps class.
 
+### Team Members
+Trip Phillips, Reed Brace, Robert Moody, Stanley Lin
 
-### Structures
-The directory structure will be shown here
+### Directory Structure
+client: Slinky + Scala.js
+server: Play
+shared: shared content being used between client and server
