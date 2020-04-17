@@ -5,6 +5,6 @@ This is the repository for the video streaming web application for Dr. Lewis's W
 Trip Phillips, Reed Brace, Robert Moody, Stanley Lin
 
 ### Directory Structure
-client: Slinky + Scala.js
-server: Play
-shared: shared content being used between client and server
+- client: Slinky + Scala.js
+- server: Play
+- shared: shared content being used between client and server
