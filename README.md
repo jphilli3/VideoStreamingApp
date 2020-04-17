@@ -7,4 +7,4 @@ Trip Phillips, Reed Brace, Robert Moody, Stanley Lin
 ### Directory Structure
 - client: Slinky + Scala.js
 - server: Play
-- shared: shared content being used between client and server
+- shared: shared content being used by both client and server

@@ -1,6 +1,6 @@
 package videostreaming
 
-// shared content between client and server
+// shared content by both client and server
 import videostreaming.shared.SharedMessages
 import org.scalajs.dom
 
