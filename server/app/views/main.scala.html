@@ -13,7 +13,6 @@
     <script src="https://unpkg.com/react-dom@@16/umd/react-dom.development.js" crossorigin></script>
   </head>
   <body>
-    <h1>Only Trip Phillips, Reed Brace, Robert Moody, and Stanley Lin shall see this page</h1>
     @content
     @scalajs.html.scripts("client", routes.Assets.versioned(_).toString, name => getClass.getResource(s"/public/$name") != null)
   </body>

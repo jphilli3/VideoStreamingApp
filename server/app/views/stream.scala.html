@@ -1,0 +1,6 @@
+@()(implicit request: RequestHeader, flash: Flash)
+@main("Video Streaming") {
+    <input type="hidden" id="stream" value="">
+    <!--<input type="hidden" id="csrfToken" value="@helper.CSRF.getToken.value">-->
+    <div id="react-root"></div>
+}
