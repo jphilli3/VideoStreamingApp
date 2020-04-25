@@ -8,8 +8,14 @@ import play.api.mvc._
 @Singleton
 class Application @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
+  var userLoggedIn = true
+
   def index = Action {
-    Ok(views.html.index(SharedMessages.itWorks))
+    if (userLoggedIn) {
+        Ok(views.html.stream())
+    } else {
+        Ok(views.html.index(SharedMessages.itWorks))
+    }
   }
 
 }
