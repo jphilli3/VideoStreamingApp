@@ -4,6 +4,10 @@
 
 # Home page
 GET        /                             videostreaming.controllers.Application.index
+GET        /stream                       videostreaming.controllers.Application.stream
+
+GET        /login                        videostreaming.controllers.Application.login
+GET        /signup                       videostreaming.controllers.Application.signup
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)

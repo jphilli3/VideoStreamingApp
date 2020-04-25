@@ -7,37 +7,48 @@ import slinky.web.html._
 
 @react class LoginSignupComponent extends Component {
   type Props = Unit
-  case class State(text: String)
+  case class State(title: String, detail: String)
 
-  def initialState: State = State("")
+  def initialState: State = State("Login", "I have not created an account.")
 
   def render(): ReactElement = {
     div (
-      h3 (
-        //view title
+      p (id := "stream-title", className := "stream-title") (
+        "Stream Your Face"
       ),
-      div ( //loginsignup container
-        h1 (
-          // Login/Signup Title
+      div (id := "loginsignup-container", className := "loginsignup-container") (
+        p (id := "loginsignup-title", className := "loginsignup-title") (
+          initialState.title
         ),
-        input (
+        input (id := "username-field", className := "loginsignup-field", placeholder := "Username") (
           //username input
         ),
-        input (
+        input (id := "password1-field", className := "loginsignup-field", placeholder := "Password") (
           //password input
         ),
-        button (
+        input (id := "password2-field", className := "loginsignup-field", placeholder := "Password") (
+          //password input
+        ),
+        button (id := "loginsignup-button", className := "rounded-button", onClick := (_ => { loginsignupAction(true) })) (
           //login/signup button
         ),
       ),
-      div ( //toggle loginsignup containter
-        p (
-          //"I dont have an account" label
+      div (id := "loginsignup-toggle-container", className := "dark-detail-container") ( //toggle loginsignup containter
+        p (id := "dark-detail-container-label", className := "dark-detail-container-label") ( 
+          initialState.detail //"I dont have an account" label
         ),
-        button (
-          //toggle button
+        button (id := "dark-detail-container-button", className := "dark-detail-container-button", onClick := (_ => { loginsignupToggle() })) (
+          initialState.title.toUpperCase()
         ),
       )  
     )
+  }
+
+  def loginsignupToggle() {
+    println("loginsignup toggle.")
+  }
+
+  def loginsignupAction(login: Boolean) {
+    println("loginsignup clicked.")
   }
 }
