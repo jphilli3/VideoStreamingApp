@@ -12,7 +12,7 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
 
   def index = Action {
     if (userLoggedIn) {
-        Ok(views.html.stream())
+        Ok(views.html.index("J"))
     } else {
         Ok(views.html.index(SharedMessages.itWorks))
     }
