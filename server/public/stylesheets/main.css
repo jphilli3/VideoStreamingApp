@@ -1,4 +1,10 @@
+.loginsignup-page {
+    display: block;
+    text-align: center;
+}
+
 .stream-title {
+    margin-bottom: 50px;
     text-align: center;
     font-family: Roboto-Regular;
     font-size: 34px;
@@ -8,11 +14,16 @@
 }
 
 .loginsignup-container {
+    text-align: center;
+    margin-left: 10%;
+    width: 80%;
+    height: 550px;
     background: #910000;
     box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px -7px rgba(0,0,0,0.20);
 }
 
 .loginsignup-title {
+    margin-top: 40px;
     text-align: center;
     font-family: Roboto-Light;
     font-size: 60px;
@@ -22,6 +33,8 @@
 }
 
 .loginsignup-field {
+    margin-top: 60px;
+    width: 90%;
     border-top: none;
     border-left: none;
     border-right: none;
@@ -49,34 +62,72 @@
 }
 
 .rounded-button {
+    position: absolute;
+    top: 70%;
+    left: 82%;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
     border: none;
     background: #FFDA1F;
     box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.20);
-	cursor: pointer;
+    cursor: pointer;
+    outline: none;
+}
+
+.rounded-button:hover {
+	background-color: #FFBC01;
+}
+
+.rounded-button:active {
+	top: 70.2%;
 }
 
 .dark-detail-container {
+    display: block;
+    margin-top: 10px;
+    display: flex;
+    width: 28%;
+    height: 10%;
+    margin-left: 10%;
     background: #212121;
     box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px -7px rgba(0,0,0,0.20);
 }
 
 .dark-detail-container-label {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-right: 10px;
+    width: 266px;
     text-align: center;
     font-family: Roboto-Regular;
     font-size: 18px;
     color: rgba(255,255,255,0.87);
     letter-spacing: 0.32px;
     line-height: 20px;
+    display: block;
 }
 
 .dark-detail-container-button {
+    margin-top: 20px;
+    margin-bottom: 20px;
     border: none;
     background-color: #212121;
-    text-align: center;
     cursor: pointer;
     font-family: Roboto-Medium;
     font-size: 20px;
     color: #DE6A6A;
     letter-spacing: 1.79px;
     line-height: 16px;
+    display: block;
+    outline: none;
+}
+
+.dark-detail-container-button:hover {
+	color: #DE5656;
+}
+.dark-detail-container-button:active {
+    background-color: #21212100;
+	position: relative;
+	top: 1px;
 }

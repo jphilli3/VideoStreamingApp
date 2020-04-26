@@ -1,4 +1,4 @@
-package videostreaming.controllers
+package controllers
 
 import javax.inject._
 
@@ -22,7 +22,7 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
     Ok(views.html.stream())
   }
 
-  def login= Action { implicit request =>
+  def login = Action { implicit request =>
     Ok(views.html.loginsignup())
   }
 
