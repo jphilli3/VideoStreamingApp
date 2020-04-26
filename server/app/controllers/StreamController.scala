@@ -1,4 +1,4 @@
-package videostreaming.controllers
+package controllers
 
 import javax.inject._
 
