@@ -1,7 +1,9 @@
 @()(implicit request: RequestHeader, flash: Flash)
 
 @main("Video Streaming") {
-    <input type="hidden" id="loginsignup" value="">
+    <input type="hidden" id="login" value="">
+    <input type="hidden" id="chevronImage" value="@routes.Assets.versioned("images/icons8-chevron-right-24.png")">
     <input type="hidden" id="streamRoute" value="@routes.Application.stream()">
+
     <div id="react-root"></div>
 }

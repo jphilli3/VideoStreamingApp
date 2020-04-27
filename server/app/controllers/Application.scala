@@ -14,7 +14,7 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
     if (isUserLoggedIn) {
       Ok(views.html.stream())
     } else {
-      Ok(views.html.loginsignup())
+      Ok(views.html.login())
     }
   }
 
@@ -23,11 +23,11 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
   }
 
   def login = Action { implicit request =>
-    Ok(views.html.loginsignup())
+    Ok(views.html.login())
   }
 
   def signup = Action { implicit request =>
-    Ok(views.html.loginsignup())
+    Ok(views.html.signup())
   }
 
 }

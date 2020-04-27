@@ -20,9 +20,16 @@ object MainScalaJS {
         )
       }
 
-      if (dom.document.getElementById("loginsignup") != null) {
+      if (dom.document.getElementById("login") != null) {
         ReactDOM.render(
-          LoginSignupComponent(),
+          LoginSignupComponent(true),
+          dom.document.getElementById("react-root")
+        )
+      }
+
+      if (dom.document.getElementById("signup") != null) {
+        ReactDOM.render(
+          LoginSignupComponent(false),
           dom.document.getElementById("react-root")
         )
       }
