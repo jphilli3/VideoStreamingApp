@@ -8,14 +8,25 @@ import play.api.mvc._
 @Singleton
 class Application @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
 
-  var userLoggedIn = true
+  var isUserLoggedIn = false
 
-  def index = Action {
-    if (userLoggedIn) {
-        Ok(views.html.index("J"))
+  def index = Action { implicit request =>
+    if (isUserLoggedIn) {
+      Ok(views.html.stream())
     } else {
-        Ok(views.html.index(SharedMessages.itWorks))
+      Ok(views.html.login())
     }
   }
 
+  def stream = Action { implicit request =>
+    Ok(views.html.stream())
+  }
+
+  def login = Action { implicit request =>
+    Ok(views.html.login())
+  }
+
+  def signup = Action { implicit request =>
+    Ok(views.html.signup())
+  }
 }

@@ -1,0 +1,8 @@
+@()(implicit request: RequestHeader, flash: Flash)
+@main("Video Streaming") {
+    <input type="hidden" id="stream" value="">
+    <input type="hidden" id="searchImage" value="@routes.Assets.versioned("images/icons8-search-24.png")">
+    <input type="hidden" id="loginRoute" value="@routes.Application.login()">
+    <!--<input type="hidden" id="csrfToken" value="@helper.CSRF.getToken.value">-->
+    <div id="react-root"></div>
+}

@@ -22,10 +22,11 @@ lazy val server = (project in file("server")).settings(commonSettings).settings(
 
 lazy val client = (project in file("client")).settings(commonSettings).settings(
   scalaJSUseMainModuleInitializer := true,
+  addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.1" cross CrossVersion.full),
   libraryDependencies ++= Seq(
     "org.scala-js" %%% "scalajs-dom" % "0.9.5",
-		"me.shadaj" %%% "slinky-core" % "0.6.3",
-		"me.shadaj" %%% "slinky-web" % "0.6.3",
+		"me.shadaj" %%% "slinky-core" % "0.6.5",
+		"me.shadaj" %%% "slinky-web" % "0.6.5",
 		"com.typesafe.play" %% "play-json" % "2.8.1"
   ),
 	scalacOptions += "-P:scalajs:sjsDefinedByDefault"
