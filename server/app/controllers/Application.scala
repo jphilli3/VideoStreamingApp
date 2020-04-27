@@ -29,5 +29,4 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
   def signup = Action { implicit request =>
     Ok(views.html.signup())
   }
-
 }
