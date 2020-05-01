@@ -1,6 +1,9 @@
 # VideoStreamingApp
 This is the repository for the video streaming web application for Dr. Lewis's Web Apps class.
 
+# URL
+http://webapps-videostreaming.herokuapp.com/
+
 ### Team Members
 Trip Phillips, Reed Brace, Robert Moody, Stanley Lin
 
