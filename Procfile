@@ -1,1 +1,1 @@
-web: server/target/universal/stage/bin/server -Dhttp.port=9000
+web: server/target/universal/stage/bin/server
