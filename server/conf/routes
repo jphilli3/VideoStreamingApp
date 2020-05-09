@@ -4,10 +4,17 @@
 
 # Home page
 GET        /                             controllers.Application.index
-GET        /stream                       controllers.Application.stream
 
-GET        /login                        controllers.Application.login
-GET        /signup                       controllers.Application.signup
+#Login/Signup Pages
+GET        /login                        controllers.LoginSignupController.login
+GET        /signup                       controllers.LoginSignupController.signup
+
+POST       /validatesignup               controllers.LoginSignupController.validateSignupPost
+POST       /validatelogin                controllers.LoginSignupController.validateLoginPost   
+
+# Stream Page
+GET        /logout                        controllers.StreamController.logout
+GET        /stream                       controllers.StreamController.stream
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)

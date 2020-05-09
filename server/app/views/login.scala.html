@@ -1,9 +1,13 @@
 @()(implicit request: RequestHeader, flash: Flash)
 
 @main("Video Streaming") {
+    <input type="hidden" id="csrfToken" value="@helper.CSRF.getToken.value">
     <input type="hidden" id="login" value="">
     <input type="hidden" id="chevronImage" value="@routes.Assets.versioned("images/icons8-chevron-right-24.png")">
-    <input type="hidden" id="streamRoute" value="@routes.Application.stream()">
+
+    <input type="hidden" id="streamRoute" value="@routes.StreamController.stream()">
+    <input type="hidden" id="validateLoginRoute" value="@routes.LoginSignupController.validateLoginPost()">
+    <input type="hidden" id="validateSignupRoute" value="@routes.LoginSignupController.validateSignupPost()">
 
     <div id="react-root"></div>
 }

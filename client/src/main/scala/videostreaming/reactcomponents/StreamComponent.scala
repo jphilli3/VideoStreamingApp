@@ -14,7 +14,7 @@ import org.scalajs.dom.window
 
   def initialState: State = State("START", "Start my own stream.", "12342342343234")
 
-  val loginRoute = document.getElementById("loginRoute").asInstanceOf[html.Input].value
+  val logoutRoute = document.getElementById("logoutRoute").asInstanceOf[html.Input].value
 
   def render(): ReactElement = {
     div (className := "stream-page") (
@@ -76,7 +76,7 @@ import org.scalajs.dom.window
   } 
 
   def logout() {
-    window.location.replace(loginRoute)
+    window.location.replace(logoutRoute)
   }
 
   def sendMessage() {

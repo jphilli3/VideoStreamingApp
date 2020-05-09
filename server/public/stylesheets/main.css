@@ -48,6 +48,19 @@
     outline: none;
 }
 
+.error-message {
+    text-align: left;
+    font-family: Roboto-Regular;
+    font-size: 25px;
+    color: rgba(0,0,0,0.87);
+    letter-spacing: 0;
+    line-height: 36px;
+    margin-top: 60px;
+    border: none;
+    background-color: #910000;
+    width: 90%;
+}
+
 .loginsignup-field::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: rgba(255,255,255,0.87);
     opacity: 0.87; /* Firefox */
