@@ -6,7 +6,7 @@ import videostreaming.shared.SharedMessages
 import play.api.mvc._
 
 import play.api.libs.json._
-
+import models._
 import play.api.db.slick.HasDatabaseConfigProvider
 import play.api.db.slick.DatabaseConfigProvider
 import slick.jdbc.JdbcProfile
@@ -24,7 +24,7 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
 
   def index = Action.async { implicit request =>
     withSessionUsername { username =>
-        Future.successful(Ok(views.html.stream()))
+        Future.successful(Ok(views.html.stream(username)))
     }
   }
 

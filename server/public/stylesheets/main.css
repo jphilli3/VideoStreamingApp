@@ -157,7 +157,14 @@
 }
 
 .streamid-label {
-    margin-left: 50%;
+    margin-left: 35%;
+    font-family: Roboto-Regular;
+    font-size: 25px;
+    color: rgba(0,0,0,0.87);
+    letter-spacing: 0.23px;
+}
+
+.streamuser-label {
     font-family: Roboto-Regular;
     font-size: 25px;
     color: rgba(0,0,0,0.87);

@@ -12,11 +12,16 @@ import org.scalajs.dom.window
   type Props = Unit
   case class State(stream: String, streamMessage: String, streamID: String, currentUsername: String)
 
+  def initialState: State = State("START", "Start my own stream.", "12342342343234", "")
+
   val logoutRoute = document.getElementById("logoutRoute").asInstanceOf[html.Input].value
 
   val currentUsername = document.getElementById("currentUser").asInstanceOf[html.Input].value
 
-  def initialState: State = State("START", "Start my own stream.", "12342342343234", currentUsername)
+
+  override def componentDidMount(): Unit = {
+    setState(state.copy(currentUsername=currentUsername))
+  }
 
   def render(): ReactElement = {
     div (className := "stream-page") (
@@ -24,12 +29,12 @@ import org.scalajs.dom.window
         "Stream Your Face"
       ),
       div (id := "stream-container", className := "stream-container") ( 
-        label (id := "streamuser-label", className := "streamuser-label") (
-          "Current User: " + state.currentUsername
-        ),
         button (id := "settings-button", className := "settings-button", onClick := (_ => { logout() })) (
           //settings button
           "Logout"
+        ),
+        label (id := "streamuser-label", className := "streamuser-label") (
+          "Current User: " + state.currentUsername 
         ),
         label (id := "streamid-label", className := "streamid-label") (
           "Stream ID: " + state.streamID

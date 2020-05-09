@@ -11,8 +11,6 @@ case class User(username: String, password: String)
 
 class UserModel (db: Database) (implicit ec: ExecutionContext)  { 
 
-    //private val users = mutable.Map[String, String]("TripPhillips" -> "12345678", "web" -> "apps", "mlewis" -> "prof")
-
     def validateUser(username: String, password: String): Future[Option[Int]] = {
         val matches = db.run(Users.filter(userRow => userRow.username === username).result)
         matches.map(userRows => userRows.headOption.flatMap {

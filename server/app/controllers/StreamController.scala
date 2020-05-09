@@ -18,12 +18,14 @@ import java.lang.ProcessBuilder.Redirect
 @Singleton
 class StreamController @Inject()(protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents) (implicit ec: ExecutionContext) extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
 
-    def withSessionUsername(f: String => Future[Result])(implicit request: Request[AnyContent]): Future[Result] = {
-            request.session.get("username").map(f).getOrElse(Future.successful(Ok(views.html.login())))
+     def withSessionUsername(f: String => Future[Result])(implicit request: Request[AnyContent]): Future[Result] = {
+        request.session.get("username").map(f).getOrElse(Future.successful(Ok(views.html.login())))
     }
 
-    def stream = Action { implicit request =>
-        Ok(views.html.stream())
+    def stream = Action.async { implicit request =>
+        withSessionUsername { username =>
+            Future.successful(Ok(views.html.stream(username)))
+        }
     }
 
     def logout = Action {
