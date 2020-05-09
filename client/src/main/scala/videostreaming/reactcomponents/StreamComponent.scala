@@ -97,5 +97,4 @@ import org.scalajs.dom.window
 
   //*****Add functionality******
 
-
 }

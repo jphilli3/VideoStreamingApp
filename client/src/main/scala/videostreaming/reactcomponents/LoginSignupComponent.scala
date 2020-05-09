@@ -55,27 +55,6 @@ import org.scalajs.dom.window
     )
   }
 
-  // import slinky.web.svg._
-
-  // def createSVG(): ReactElement = {
-  //     svg (width := "19px", height := "30px", viewBox := "0 0 19 30", version := "1.1", xmlns := "http://www.w3.org/2000/svg", xmlnsXlink := "http://www.w3.org/1999/xlink") (
-  //         defs (
-  //             polygon(id := "path-1", points := "25 15 21.475 18.525 32.925 30 21.475 41.475 25 45 40 30")
-  //         ),
-  //         g (id := "Material-Light-Theme-🌕", stroke := "none", strokeWidth := "1", fill := "none", fillRule := "evenodd") (
-  //           g (id := "Login-View", transform := "translate(-1161.000000, -644.000000)") (
-  //             rect (fill := "#FFFFFF", x := "0", y := "0", width := "1440", height := "1024"),
-  //             g (id := "icon/navigation/chevron_right_24px", transform := "translate(1140.000000, 629.000000)") (
-  //               mask (id := "mask-2", fill := "white") (
-  //                 use (xlinkHref := "#path-1") (),
-  //               ),
-  //               use (id := "-↳Color", fill := "#000000", fillRule := "evenodd", xmlnsXlink := "#path-1"),
-  //             ),
-  //         ),
-  //       ),
-  //     ),
-  // }
-
   def loginsignupToggle() {
      if (state.title == "Signup") {
       setState(state.copy(title = "Login", detailLabel = "I have not created an account.", detailButtonLabel = "SIGNUP", password2hidden = true))
