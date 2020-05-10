@@ -13,8 +13,10 @@ POST       /validatesignup               controllers.LoginSignupController.valid
 POST       /validatelogin                controllers.LoginSignupController.validateLoginPost   
 
 # Stream Page
-GET        /logout                        controllers.StreamController.logout
+GET        /logout                       controllers.StreamController.logout
 GET        /stream                       controllers.StreamController.stream
+POST       /postmessage                  controllers.StreamController.sendNewMessagePost
+GET        /getmessage                   controllers.StreamController.getMessages
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)

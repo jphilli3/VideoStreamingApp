@@ -293,8 +293,8 @@
 }
 
 .stream-messages-table-container {
-    display: flex;
     width: 72%;
+    height: 350px;
     background: #FFFFFF;
     text-align: center;
     box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px -7px rgba(0,0,0,0.20);
@@ -310,8 +310,44 @@
 }
 
 .stream-messages-table {
-    height: 350px;
+    
 }
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+ul {
+    list-style-type: none;
+    margin-left: center;
+    padding: 0;
+    width: 100%;
+    background-color: #000000;
+    text-align: center;
+    margin: 0;
+}
+  
+li a {
+    display: block;
+    color: white;
+    padding: 10px 40px;
+    text-decoration: none;
+    font-size: 30px;
+    font-family: Roboto-Regular;
+}
+
+tr {
+    height: 30px;
+}
+
+th, td {
+    text-align: center;
+    padding: 8px;
+    color: #000000;
+    font-family: Roboto-Regular;
+    font-size: 18px;
+}
+
 
 .stream-create-messages-container {
     width: 25%;

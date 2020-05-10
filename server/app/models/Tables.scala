@@ -45,7 +45,7 @@ trait Tables {
     /** Database column user_message SqlType(varchar), Length(2000,true) */
     val userMessage: Rep[String] = column[String]("user_message", O.Length(2000,varying=true))
     /** Database column message_time SqlType(varchar), Length(20,true) */
-    val messageTime: Rep[String] = column[String]("message_time", O.Length(20,varying=true))
+    val messageTime: Rep[String] = column[String]("message_time", O.Length(50,varying=true))
   }
   /** Collection-like TableQuery object for table Messages */
   lazy val Messages = new TableQuery(tag => new Messages(tag))

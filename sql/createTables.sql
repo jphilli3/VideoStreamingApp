@@ -9,5 +9,5 @@ CREATE TABLE messages (
     streamid varchar(50) NOT NULL,
     from_user varchar(50) NOT NULL,
     user_message varchar(2000) NOT NULL,
-    message_time varchar(20) NOT NULL
+    message_time varchar(50) NOT NULL
 );
