@@ -61,7 +61,7 @@ class StreamController @Inject()(protected val dbConfigProvider: DatabaseConfigP
     def writeJson(messages: Seq[Message]) = { 
         Json.toJson(
             messages.map( message => Map(
-            "streamId" -> message.streamid,
+            "streamid" -> message.streamid,
             "from" -> message.from,
             "message" -> message.message,
             "time" -> message.time

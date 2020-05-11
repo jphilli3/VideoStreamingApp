@@ -120,7 +120,7 @@ import java.util.Date
           label (id := "create-message-title", className := "create-message-title") (
             "Create Message"
           ),
-          textarea (id := "create-message-textarea", className := "create-message-textarea", onChange := (_ => { updateFieldStates() })) (
+          textarea (id := "create-message-textarea", className := "create-message-textarea", value := state.newMessage, onChange := (_ => { updateFieldStates() })) (
             //message input
           ),
           button (id := "create-message-button", className := "create-message-button", onClick := (_ => {  sendMessage() })) (
@@ -150,7 +150,6 @@ import java.util.Date
         println(data)
         Json.fromJson[Seq[Message]](Json.parse(data)) match {
           case JsSuccess(messages, path) =>
-            println(messages)
             setState(state.copy(messages = messages))
           case e @ JsError(_) =>
             println("Fetch error: " + e)
@@ -160,19 +159,20 @@ import java.util.Date
   }
 
   def sendMessage() {
-
     val headers = new Headers()
     headers.set("Content-Type", "application/json")
     headers.set("Csrf-Token", csrfToken)
     val time = new Date().toString()
-    val data = Message("123412341234", currentUsername, state.newMessage, time)
+    val data = Message(state.streamID, state.currentUsername, state.newMessage, time)
     Fetch.fetch(sendMessageRoute, RequestInit(method = HttpMethod.POST, mode = RequestMode.cors, headers = headers, body = Json.toJson(data).toString))
     .flatMap(result => result.text())
     .map { data => 
+      print("SOMETHING HAPPENED!")
       Json.fromJson[Boolean](Json.parse(data)) match {
         case JsSuccess(bool,path) =>
           if (bool) {
-              window.location.replace(streamRoute)
+              setState(state.copy(newMessage = ""))
+              getMessages(state.streamID)
           } else {
               println("Failed to send message.")
           }

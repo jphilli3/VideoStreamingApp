@@ -310,43 +310,37 @@
 }
 
 .stream-messages-table {
-    
-}
-table {
     border-collapse: collapse;
+    table-layout: fixed;
     width: 100%;
-}
-
-ul {
-    list-style-type: none;
-    margin-left: center;
-    padding: 0;
-    width: 100%;
-    background-color: #000000;
     text-align: center;
-    margin: 0;
 }
+.stream-messages-table tbody{
+    display:block;
+    width: 100%;
+    overflow: auto;
+    height: 270px;
+  }
+
   
-li a {
-    display: block;
-    color: white;
-    padding: 10px 40px;
-    text-decoration: none;
-    font-size: 30px;
-    font-family: Roboto-Regular;
-}
+  .stream-messages-table thead tr {
+     display: block;
+     width: 100%;
+  }
+  
+  .stream-messages-table  thead {
 
-tr {
-    height: 30px;
-}
-
-th, td {
+    color:#fff;
+  }
+  
+  .stream-messages-table  th, .stream-messages-table  td {
+    padding: 5px;
     text-align: center;
-    padding: 8px;
+    width: 275px;
     color: #000000;
     font-family: Roboto-Regular;
     font-size: 18px;
-}
+  }
 
 
 .stream-create-messages-container {

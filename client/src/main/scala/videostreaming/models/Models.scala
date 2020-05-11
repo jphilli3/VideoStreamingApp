@@ -4,7 +4,7 @@ import play.api.libs.json.Json
 
 case class User(username: String, password: String)
 
-case class Message(streamId: String, from: String, message: String, time: String)
+case class Message(streamid: String, from: String, message: String, time: String)
 
 object ReadsAndWrites {
     implicit val userDataReadsUser = Json.reads[User]
