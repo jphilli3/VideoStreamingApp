@@ -22,6 +22,24 @@ import scala.concurrent.ExecutionContext
 import play.api.libs.json.Json
 import java.util.Date
 
+// streaming related
+import videostreaming.resources.{MediaDevices, MediaTrackSupportedConstraints}
+import org.scalajs.dom.experimental.mediastream.{MediaDeviceKind, MediaDeviceInfo, MediaStream, MediaStreamConstraints}
+// import org.scalajs.dom.experimental.webrtc._
+import org.scalajs.dom.raw.{Event, EventTarget}
+import scala.concurrent.Future
+import scala.util.{Failure, Success}
+import scala.scalajs.js.{Array, Dynamic}
+
+
+object Conf {
+  implicit val ec = ExecutionContext.global
+
+  val constraints = MediaStreamConstraints(video = true, audio = true)
+  val mediaDevices: MediaDevices = window.navigator.asInstanceOf[Dynamic].mediaDevices.asInstanceOf[MediaDevices]
+  val audioOutputId: Future[Array[MediaDeviceInfo]] = mediaDevices.enumerateDevices().toFuture.map(_.filter(_.kind == MediaDeviceKind.audiooutput))
+}
+
 
 @react class StreamComponent extends Component {
 
@@ -53,6 +71,20 @@ import java.util.Date
   }
 
   def render(): ReactElement = {
+    // Conf.mediaDevices.getUserMedia(Conf.constraints).toFuture.onComplete {
+    Conf.mediaDevices.getDisplayMedia(Conf.constraints).toFuture.onComplete {
+      case Success(stream) =>
+        // onJoin(roomProp.get, nickProp.get, this, stream)
+        println("successfully retrieved stream!")
+        // logoutButton.onclick = {(me: MouseEvent) =>
+        //   stream.getVideoTracks().foreach(_.stop())
+        //   stream.getAudioTracks().foreach(_.stop())
+        //   onLeave(roomProp.get, nickProp.get)
+      // }
+      case Failure(ex) => println(s"error getting user media ${ex.toString}")
+    }
+
+        
     div (className := "stream-page") (
       p (id := "stream-title", className := "stream-title") (
         "Stream Your Face"
