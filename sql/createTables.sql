@@ -12,8 +12,8 @@ CREATE TABLE messages (
     message_time varchar(50) NOT NULL
 );
 
-CREATE TABLE streams (
-    id SERIAL PRIMARY KEY,
-    streamid varchar(50) NOT NULL,
-    host_user varchar(50) NOT NULL
-);
+-- CREATE TABLE streams (
+--     id SERIAL PRIMARY KEY,
+--     streamid varchar(50) NOT NULL,
+--     host_user varchar(50) NOT NULL
+-- );
