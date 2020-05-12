@@ -21,7 +21,8 @@ import org.scalajs.dom.experimental.HttpMethod
 import scala.concurrent.ExecutionContext
 import play.api.libs.json.Json
 import java.util.Date
-
+import java.util.Timer
+import java.util.TimerTask
 // streaming related
 import videostreaming.resources.{MediaDevices, MediaTrackSupportedConstraints}
 import org.scalajs.dom.experimental.mediastream.{MediaDeviceKind, MediaDeviceInfo, MediaStream, MediaStreamConstraints}
@@ -36,6 +37,13 @@ import org.scalajs.dom.raw.CloseEvent
 import org.scalajs.dom.raw.HTMLElement
 import org.scalajs.dom.raw.HTMLVideoElement
 import org.scalajs.dom.raw.MouseEvent
+import org.scalajs.dom.experimental.webrtc.RTCPeerConnection
+import org.scalajs.dom.experimental.webrtc.RTCIceCandidate
+import org.scalajs.dom.experimental.webrtc.RTCPeerConnectionIceEvent
+import org.scalajs.dom.experimental.webrtc.RTCSessionDescription
+import org.scalajs.dom.experimental.webrtc.RTCSessionDescriptionInit
+import org.scalajs.dom.experimental.webrtc.RTCSdpType
+import org.scalajs.dom.experimental.webrtc.RTCIceCandidateInit
 
 
 object Conf {
@@ -60,10 +68,11 @@ object Conf {
     newMessage: String,
     detailStart: String, 
     detailMessage: String,
-    websocket: WebSocket 
+    websocket: WebSocket,
+    localStream: MediaStream 
   )
 
-  def initialState: State = State("", "", "", Seq.empty, "", "START", "Start my own stream.", null)
+  def initialState: State = State("", "", "", Seq.empty, "", "START", "Start my own stream.", null, null)
 
   val logoutRoute = document.getElementById("logoutRoute").asInstanceOf[html.Input].value
   val streamRoute = document.getElementById("streamRoute").asInstanceOf[html.Input].value
@@ -76,8 +85,6 @@ object Conf {
 
   val wsRoute = document.getElementById("wsRoute").asInstanceOf[html.Input].value
 
-  var remoteStream = new MediaStream()
-
   def generateStreamId(): Int = {
     val rand = scala.util.Random
     (rand.nextDouble() * 1000000000).toInt
@@ -85,9 +92,12 @@ object Conf {
 
   val streamid = generateStreamId().toString()
 
+  val localPeerConnection = new RTCPeerConnection()
+
   override def componentDidMount(): Unit = {
-    setState(state.copy(streamID=streamid, currentUsername=currentUsername))
+
     getMessages()
+    connectWebSocket()
   }
 
   def render(): ReactElement = {
@@ -189,7 +199,6 @@ object Conf {
      Fetch.fetch(getMessagesRoute)
       .flatMap(res => res.text())
       .map { data => 
-        println(data)
         Json.fromJson[Seq[Message]](Json.parse(data)) match {
           case JsSuccess(messages, path) =>
             setState(state.copy(messages = messages))
@@ -201,19 +210,19 @@ object Conf {
   }
 
   def sendMessage() {
+
     val headers = new Headers()
     headers.set("Content-Type", "application/json")
     headers.set("Csrf-Token", csrfToken)
     val time = new Date().toString()
-    val data = Message(state.streamID, state.currentUsername, state.newMessage, time)
+    val data = Message("12", state.currentUsername, state.newMessage, time)
     Fetch.fetch(sendMessageRoute, RequestInit(method = HttpMethod.POST, mode = RequestMode.cors, headers = headers, body = Json.toJson(data).toString))
     .flatMap(result => result.text())
     .map { data => 
-      print("SOMETHING HAPPENED!")
       Json.fromJson[Boolean](Json.parse(data)) match {
         case JsSuccess(bool,path) =>
           if (bool) {
-              state.websocket.send("new message")
+              state.websocket.send("new stream message")
               setState(state.copy(newMessage = ""))
           } else {
               println("Failed to send message.")
@@ -245,16 +254,57 @@ object Conf {
     }
 
   }
-  
 
   def handleSuccesfulMediaUsage(stream: MediaStream): Unit = {
+
+    setState(state.copy(localStream = stream))
+
     val video = document.getElementById("stream-view").asInstanceOf[HTMLVideoElement]
     video.asInstanceOf[js.Dynamic].srcObject = stream
     video.play()
 
+    handlePeerConnection()
+
   }
 
-   def startStream() {
+  def handlePeerConnection(): Unit = {
+    localPeerConnection.onicecandidate = (event: RTCPeerConnectionIceEvent) => handleIceCanditate(event)
+    localPeerConnection.addStream(state.localStream)
+  }
+
+  def handleIceCanditate(event: RTCPeerConnectionIceEvent): Unit = {
+      state.websocket.send(event.candidate.toString()) 
+
+  }
+
+  def createOffer(): Unit = {
+    localPeerConnection.createOffer().toFuture.onComplete{
+      case Success(description) =>
+        localPeerConnection.setLocalDescription(description)
+        println(s"created offer, set it as local description, sending it to $target...")
+        state.websocket.send("Offer")
+      case Failure(ex) => println(s"error creating offer ${ex.toString}")
+    }
+  }
+
+  def receiveOffer(): Unit = {
+    println(s"received offer from $target, setting as remote description")
+    //localPeerConnection.setRemoteDescription(new RTCSessionDescription(RTCSessionDescriptionInit(RTCSdpType.offer, offer.sdp)))
+    localPeerConnection.createAnswer().toFuture.onComplete{
+      case Success(description) =>
+        localPeerConnection.setLocalDescription(description)
+        println(s"created answer, set it as local description, sending it to $target...")
+        state.websocket.send("Answer")
+      case Failure(ex) => println(s"error creating answer ${ex.toString}")
+    }
+  }
+
+  def receiveAnswer(): Unit = {
+    println(s"received answer from $target, setting as remote description")
+    //localPeerConnection.setRemoteDescription(new RTCSessionDescription(RTCSessionDescriptionInit(RTCSdpType.answer, answer.sdp)))
+  }
+
+  def startStream() {
     requestMediaUsage()
     connectWebSocket()
     setState(state.copy(detailStart = "STOP", detailMessage = "Stop my stream.", streamID = "123412341234"))
@@ -276,22 +326,20 @@ object Conf {
       }
   }
 
-
   def searchStreamID() {
       val searchID = state.searchStreamID
       connectWebSocket()
   }
 
   def connectWebSocket() {
-
       //val ws = new WebSocket(wsRoute.replace("http","wss")) Remote
-      val ws = new WebSocket(wsRoute.replace("http","ws"))
+      val ws = new WebSocket(wsRoute.replace("http","ws")) 
+      setState(state.copy(streamID=streamid, currentUsername=currentUsername, websocket=ws))
       println(ws.protocol)
       println("URL" + ws.url.toString())
       ws.onopen = (oe: Event) => handleOpenedConnection(oe,ws)
       ws.onmessage = (me: MessageEvent) => handleIncomingMessages(me,ws)
       ws.onclose = (ce: CloseEvent) => handleClose(ce,ws)
-
 
   }
 
@@ -300,21 +348,31 @@ object Conf {
   }
 
   def handleOpenedConnection(oe: Event, ws: WebSocket): Unit = {
+    
     println("Opened Connection" + oe.toString())
     setState(state.copy(websocket = ws))
   }
 
+  implicit def pingWebSocketWithTimer(f: () => Unit): TimerTask = {
+        return new TimerTask {
+          def run() = f()
+        }
+  }
+
+  def ping(start: Date) { 
+    def timerTask() = state.websocket.send("ping") 
+    val timer = new Timer()
+    timer.schedule(pingWebSocketWithTimer(timerTask),100,10)
+  }
+
   def handleIncomingMessages(me: MessageEvent, ws: WebSocket): Unit = {
+      println(me.data)
       if (me.data == "new stream message") {
         getMessages()
       }
   }
 
-  def handleWsConnection(ws: WebSocket): Unit = {
 
-
-
-  }
 
   //*****Add functionality******
 

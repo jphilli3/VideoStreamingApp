@@ -3,7 +3,6 @@ package controllers
 import javax.inject._
 import models._
 import videostreaming.shared.SharedMessages
-import play.api.mvc._
 import akka.http.scaladsl.model.headers.LinkParams.title
 import play.api.libs.json._
 
@@ -18,7 +17,18 @@ import akka.stream.Materializer
 import akka.actor.ActorSystem
 import akka.actor.Props
 import actors._
+import javax.inject.{Inject, Named, Singleton}
+import akka.NotUsed
+import akka.actor.{ActorRef, ActorSystem}
+import akka.event.Logging
+import akka.stream.scaladsl.{Flow, Keep, Sink, Source}
+import akka.stream.{Materializer, OverflowStrategy}
+import akka.util.Timeout
+import org.reactivestreams.Publisher
+import play.api.mvc._
 import play.api.libs.streams.ActorFlow
+
+import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
@@ -66,6 +76,7 @@ class StreamController @Inject()(protected val dbConfigProvider: DatabaseConfigP
     }
 
     def sendNewMessagePost() = Action.async { implicit request => 
+        println("Send Message")
         withSessionUsername { username => 
             withJsonBody[Message] { message =>  
                 model.createNewMessage("12",username, message).map(count => Ok(Json.toJson(count > 0)))
@@ -84,9 +95,10 @@ class StreamController @Inject()(protected val dbConfigProvider: DatabaseConfigP
         )
     }
 
-    def webSocket = WebSocket.accept[String, String] { request => 
+   def webSocket = WebSocket.accept[String, String] { request => 
         ActorFlow.actorRef { out => 
             ChatActor.props(out, manager)
         }
     }
-}
+
+  }
