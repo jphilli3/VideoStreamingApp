@@ -31,7 +31,7 @@ lazy val client = (project in file("client")).settings(commonSettings).settings(
     "org.scala-js" %%% "scalajs-dom" % "0.9.5",
 		"me.shadaj" %%% "slinky-core" % "0.6.3",
 		"me.shadaj" %%% "slinky-web" % "0.6.3",
-		"com.typesafe.play" %% "play-json" % "2.8.1"
+		"com.typesafe.play" %% "play-json" % "2.8.1",
   ),
 	scalacOptions += "-P:scalajs:sjsDefinedByDefault"
 ).enablePlugins(ScalaJSPlugin, ScalaJSWeb).
@@ -43,8 +43,11 @@ lazy val shared = crossProject(JSPlatform, JVMPlatform)
   .settings(name := "Shared",
 		commonSettings,
 		libraryDependencies ++= Seq(
-			"com.typesafe.play" %%% "play-json" % "2.8.1"
-		))
+			"com.typesafe.play" %%% "play-json" % "2.8.1",
+      "com.lihaoyi" %%% "upickle" % "0.9.5",
+      "io.udash" %%% "udash-core-shared" % "v0.8.0"
+		)
+  )
 lazy val sharedJvm = shared.jvm
 lazy val sharedJs = shared.js
 
