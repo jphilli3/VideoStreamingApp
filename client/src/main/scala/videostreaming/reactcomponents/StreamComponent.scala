@@ -30,6 +30,12 @@ import org.scalajs.dom.raw.{Event, EventTarget}
 import scala.concurrent.Future
 import scala.util.{Failure, Success}
 import scala.scalajs.js.{Array, Dynamic}
+import org.scalajs.dom.raw.WebSocket
+import org.scalajs.dom.raw.MessageEvent
+import org.scalajs.dom.raw.CloseEvent
+import org.scalajs.dom.raw.HTMLElement
+import org.scalajs.dom.raw.HTMLVideoElement
+import org.scalajs.dom.raw.MouseEvent
 
 
 object Conf {
@@ -49,13 +55,15 @@ object Conf {
   case class State(
     streamID: String, 
     currentUsername: String,
+    searchStreamID: String,
     messages: Seq[Message],
     newMessage: String,
     detailStart: String, 
-    detailMessage: String, 
+    detailMessage: String,
+    websocket: WebSocket 
   )
 
-  def initialState: State = State("123412341234", "", Seq.empty, "", "START", "Start my own stream.")
+  def initialState: State = State("", "", "", Seq.empty, "", "START", "Start my own stream.", null)
 
   val logoutRoute = document.getElementById("logoutRoute").asInstanceOf[html.Input].value
   val streamRoute = document.getElementById("streamRoute").asInstanceOf[html.Input].value
@@ -63,27 +71,26 @@ object Conf {
   val getMessagesRoute = document.getElementById("getMessagesRoute").asInstanceOf[html.Input].value
 
   val currentUsername = document.getElementById("currentUser").asInstanceOf[html.Input].value
+
   val csrfToken = document.getElementById("csrfToken").asInstanceOf[html.Input].value
 
+  val wsRoute = document.getElementById("wsRoute").asInstanceOf[html.Input].value
+
+  var remoteStream = new MediaStream()
+
+  def generateStreamId(): Int = {
+    val rand = scala.util.Random
+    (rand.nextDouble() * 1000000000).toInt
+  }
+
+  val streamid = generateStreamId().toString()
+
   override def componentDidMount(): Unit = {
-    setState(state.copy(currentUsername=currentUsername))
-    getMessages(state.streamID)
+    setState(state.copy(streamID=streamid, currentUsername=currentUsername))
+    getMessages()
   }
 
   def render(): ReactElement = {
-    // Conf.mediaDevices.getUserMedia(Conf.constraints).toFuture.onComplete {
-    Conf.mediaDevices.getDisplayMedia(Conf.constraints).toFuture.onComplete {
-      case Success(stream) =>
-        // onJoin(roomProp.get, nickProp.get, this, stream)
-        println("successfully retrieved stream!")
-        // logoutButton.onclick = {(me: MouseEvent) =>
-        //   stream.getVideoTracks().foreach(_.stop())
-        //   stream.getAudioTracks().foreach(_.stop())
-        //   onLeave(roomProp.get, nickProp.get)
-      // }
-      case Failure(ex) => println(s"error getting user media ${ex.toString}")
-    }
-
         
     div (className := "stream-page") (
       p (id := "stream-title", className := "stream-title") (
@@ -100,8 +107,10 @@ object Conf {
         label (id := "streamid-label", className := "streamid-label") (
           "Stream ID: " + state.streamID
         ),
-        canvas (id := "stream-view", className := "stream-view") (
-          //stream video view
+        div (id := "stream-div", className := "stream-div") (
+          video (id := "stream-view", className := "stream-view") (
+
+          )
         ),
       ),
       div (id := "stream-messages-container-top", className := "stream-messages-container-top") (
@@ -109,7 +118,7 @@ object Conf {
           input (id := "streamid-input", className := "streamid-input", placeholder := "Enter Stream ID") (
             //stream id input
           ),
-          button (id := "streamid-search-button", className := "streamid-search-button", onClick := (_ => { searchStreamID() })) (
+          button (id := "streamid-search-button", className := "streamid-search-button", onClick := (_ => { searchStreamID() }), onChange := (_ => { updateFieldStates() })) (
             img (src := document.getElementById("searchImage").asInstanceOf[html.Input].value),
           ),
         ),
@@ -166,7 +175,8 @@ object Conf {
   def updateFieldStates() {
 
     val message = document.getElementById("create-message-textarea").asInstanceOf[html.TextArea].value
-    setState(state.copy(newMessage = message))
+    val streamSearch = document.getElementById("streamid-input").asInstanceOf[html.Input].value
+    setState(state.copy(newMessage = message, searchStreamID = streamSearch))
 
   }
 
@@ -174,7 +184,7 @@ object Conf {
     window.location.replace(logoutRoute)
   }
 
-  def getMessages(streamid: String) {
+  def getMessages() {
 
      Fetch.fetch(getMessagesRoute)
       .flatMap(res => res.text())
@@ -203,8 +213,8 @@ object Conf {
       Json.fromJson[Boolean](Json.parse(data)) match {
         case JsSuccess(bool,path) =>
           if (bool) {
+              state.websocket.send("new message")
               setState(state.copy(newMessage = ""))
-              getMessages(state.streamID)
           } else {
               println("Failed to send message.")
           }
@@ -214,16 +224,96 @@ object Conf {
     }
   }
 
-  def searchStreamID() {
-      
+  def requestMediaUsage() {
+
+   // Conf.mediaDevices.getUserMedia(Conf.constraints).toFuture.onComplete {
+    Conf.mediaDevices.getUserMedia(Conf.constraints).toFuture.onComplete {
+      case Success(stream) =>
+        
+        handleSuccesfulMediaUsage(stream)
+
+        val startStopButton = document.getElementById("start-stream-container-button").asInstanceOf[html.Button]
+        startStopButton.onclick = {(me: MouseEvent) => 
+            println("Video Ended")
+            stream.getVideoTracks().foreach(_.stop())
+            stream.getAudioTracks().foreach(_.stop())
+        }
+      case Failure(ex) => {
+        println(s"error getting user media ${ex.toString}")
+        endStream()
+      }
+    }
+
+  }
+  
+
+  def handleSuccesfulMediaUsage(stream: MediaStream): Unit = {
+    val video = document.getElementById("stream-view").asInstanceOf[HTMLVideoElement]
+    video.asInstanceOf[js.Dynamic].srcObject = stream
+    video.play()
+
+  }
+
+   def startStream() {
+    requestMediaUsage()
+    connectWebSocket()
+    setState(state.copy(detailStart = "STOP", detailMessage = "Stop my stream.", streamID = "123412341234"))
+  }
+
+  def endStream() {
+    val video = document.getElementById("stream-view").asInstanceOf[HTMLVideoElement]
+    video.pause()
+    video.src = ""
+    setState(state.copy(detailStart = "START", detailMessage = "Start my own stream.", streamID = "123412341234"))  
+
   }
 
   def toggleStream() {
-     if (state.detailStart == "STOP") {
-        setState(state.copy(detailStart = "START", detailMessage = "Start my own stream.", streamID = "123412341234"))
+      if (state.detailStart == "START") {
+        startStream()
       } else {
-        setState(state.copy(detailStart = "STOP", detailMessage = "Stop my stream.", streamID = "123412341234"))
+        endStream()
       }
+  }
+
+
+  def searchStreamID() {
+      val searchID = state.searchStreamID
+      connectWebSocket()
+  }
+
+  def connectWebSocket() {
+
+      //val ws = new WebSocket(wsRoute.replace("http","wss")) Remote
+      val ws = new WebSocket(wsRoute.replace("http","ws"))
+      println(ws.protocol)
+      println("URL" + ws.url.toString())
+      ws.onopen = (oe: Event) => handleOpenedConnection(oe,ws)
+      ws.onmessage = (me: MessageEvent) => handleIncomingMessages(me,ws)
+      ws.onclose = (ce: CloseEvent) => handleClose(ce,ws)
+
+
+  }
+
+  def handleClose(ce: CloseEvent, ws: WebSocket): Unit = {
+    println("WebSocket closed: " + ce)
+  }
+
+  def handleOpenedConnection(oe: Event, ws: WebSocket): Unit = {
+    println("Opened Connection" + oe.toString())
+    setState(state.copy(websocket = ws))
+  }
+
+  def handleIncomingMessages(me: MessageEvent, ws: WebSocket): Unit = {
+      if (me.data == "new stream message") {
+        getMessages()
+      }
+  }
+
+  def handleWsConnection(ws: WebSocket): Unit = {
+
+
+
   }
 
   //*****Add functionality******

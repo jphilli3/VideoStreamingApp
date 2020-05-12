@@ -23,7 +23,7 @@ trait Tables {
    *  @param streamid Database column streamid SqlType(varchar), Length(50,true)
    *  @param fromUser Database column from_user SqlType(varchar), Length(50,true)
    *  @param userMessage Database column user_message SqlType(varchar), Length(2000,true)
-   *  @param messageTime Database column message_time SqlType(varchar), Length(20,true) */
+   *  @param messageTime Database column message_time SqlType(varchar), Length(50,true) */
   case class MessagesRow(id: Int, streamid: String, fromUser: String, userMessage: String, messageTime: String)
   /** GetResult implicit for fetching MessagesRow objects using plain SQL queries */
   implicit def GetResultMessagesRow(implicit e0: GR[Int], e1: GR[String]): GR[MessagesRow] = GR{
@@ -44,7 +44,7 @@ trait Tables {
     val fromUser: Rep[String] = column[String]("from_user", O.Length(50,varying=true))
     /** Database column user_message SqlType(varchar), Length(2000,true) */
     val userMessage: Rep[String] = column[String]("user_message", O.Length(2000,varying=true))
-    /** Database column message_time SqlType(varchar), Length(20,true) */
+    /** Database column message_time SqlType(varchar), Length(50,true) */
     val messageTime: Rep[String] = column[String]("message_time", O.Length(50,varying=true))
   }
   /** Collection-like TableQuery object for table Messages */

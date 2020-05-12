@@ -16,7 +16,8 @@ POST       /validatelogin                controllers.LoginSignupController.valid
 GET        /logout                       controllers.StreamController.logout
 GET        /stream                       controllers.StreamController.stream
 POST       /postmessage                  controllers.StreamController.sendNewMessagePost
-GET        /getmessage                   controllers.StreamController.getMessages
+GET        /getmessages                  controllers.StreamController.getMessages
+GET        /ws                           controllers.StreamController.webSocket
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)

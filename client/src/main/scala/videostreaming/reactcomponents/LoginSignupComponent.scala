@@ -72,7 +72,7 @@ import scala.concurrent.ExecutionContext
         input (id := "password2-field", className := "loginsignup-field", placeholder := "Password", hidden := state.password2hidden, `type` := "password", onChange := (_ => { updateFieldStates() })) (
           //password input
         ), br(),
-        input (id := "error-message", className := "error-message", value := state.errorMessage),
+        input (id := "error-message", className := "error-message", value := state.errorMessage, readOnly),
         button (id := "loginsignup-button", className := "rounded-button", onClick := (_ => { validateLoginSignupAction() })) (
             img (src := chevronImage)
         ),

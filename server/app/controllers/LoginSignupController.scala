@@ -14,6 +14,7 @@ import slick.jdbc.PostgresProfile.api._
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 import java.lang.ProcessBuilder.Redirect
+import scala.util.Random
 
 @Singleton
 class LoginSignupController @Inject()(protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents) (implicit ec: ExecutionContext) extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
@@ -49,7 +50,8 @@ class LoginSignupController @Inject()(protected val dbConfigProvider: DatabaseCo
     Ok(views.html.signup())
   }
 
-  
+
+
   def validateSignupPost = Action.async { implicit request =>
     signupWithJsonBody[User] { ud => model.createUser(ud.username, ud.password).map { ouserId =>
        ouserId match {
