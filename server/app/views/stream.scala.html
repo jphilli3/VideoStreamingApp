@@ -8,7 +8,7 @@
     <input type="hidden" id="sendMessageRoute" value="@routes.StreamController.sendNewMessagePost()">
     <input type="hidden" id="getMessagesRoute" value="@routes.StreamController.getMessages()">
     <input type="hidden" id="streamRoute" value="@routes.StreamController.stream()">
-
+    <input type="hidden" id="wsRoute" value="@routes.StreamController.webSocket.absoluteURL()">
     <input type="hidden" id="currentUser" value="@currentUsername">
     <!--<input type="hidden" id="csrfToken" value="@helper.CSRF.getToken.value">-->
     <div id="react-root"></div>

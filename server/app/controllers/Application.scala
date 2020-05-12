@@ -22,10 +22,14 @@ class Application @Inject()(protected val dbConfigProvider: DatabaseConfigProvid
         request.session.get("username").map(f).getOrElse(Future.successful(Ok(views.html.login())))
   }
 
+  def withSessionStreamId(f: String => Future[Result])(implicit request: Request[AnyContent]): Future[Result] = {
+        request.session.get("streamid").map(f).getOrElse(Future.successful(Ok(views.html.login())))
+  }
+
   def index = Action.async { implicit request =>
-    withSessionUsername { username =>
-        Future.successful(Ok(views.html.stream(username)))
-    }
+      withSessionUsername { username =>
+          Future.successful(Ok(views.html.stream(username)))
+      }
   }
 
 }
