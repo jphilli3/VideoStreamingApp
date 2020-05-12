@@ -332,8 +332,8 @@ object Conf {
   }
 
   def connectWebSocket() {
-      //val ws = new WebSocket(wsRoute.replace("http","wss")) Remote
-      val ws = new WebSocket(wsRoute.replace("http","ws")) 
+      val ws = new WebSocket(wsRoute.replace("http","wss")) //Remote
+      //val ws = new WebSocket(wsRoute.replace("http","ws")) //Local
       setState(state.copy(streamID=streamid, currentUsername=currentUsername, websocket=ws))
       println(ws.protocol)
       println("URL" + ws.url.toString())
